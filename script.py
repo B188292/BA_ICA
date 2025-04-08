@@ -20,9 +20,10 @@ Analyze your sequence using:
     #Query Sequence Input
     parser.add_argument('--sequence', required = True, help = "The sequence you would like to BLAST")
 
-    #Algorithm/Analysis Input
+    #Allowing the user to pick between algorithms and statistical analysis
     parser.add_argument('--algorithm', default = 'blast', choices=['blast', 'Smith-Waterman', 'statistical_analysis'], help = "If you would like to run blast or smith-waterman, select the relevant option. If you would like to conduct statistical analysis, select that option.")
 
+    #abbreviating to args
     args = parser.parse_args()
 
     #Checking we have the input
@@ -32,10 +33,11 @@ Analyze your sequence using:
     if not os.path.exists(args.database):
         raise FileNotFoundError(f"Could not identify {args.database}")
 
-
+    #Checking the file is a .fasta file
     if args.sequence.lower().endswith(".fasta", ".fa"):
         print("Input okay, proceeding...")
-
+        
+        #checking the file contains a protein sequence
         prot_alph = set("ACDEFGHIKLMNPQRSTVWY")
         dna_alph = set("ACGT")
 
@@ -45,7 +47,6 @@ Analyze your sequence using:
         protein_count = sum(1 for char in sequence if char in prot_alph)
         dna_count = sum(1 for char in sequence if char in dna_alph)
 
-        #checking the residues
         if protein_count > dna_count:
             print("This is a protein sequence.\nAccepted.")
         else:
